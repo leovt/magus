@@ -15,7 +15,10 @@ class Namespace:
             return self.names[name]
 
 class Environment(Namespace):
-    pass
+    def save_as(self, destination, item):
+        destination_space, destination_name = destination.rsplit('.', 1)
+        self.get_name(destination_space).add_name(destination_name, item)
+
 
 @dataclass
 class Table:
@@ -28,26 +31,21 @@ class Table:
 @dataclass
 class Import:
     source: str
-    destination_space: str
-    destination_name: str
+    destination: str
 
     def execute(self, environ):
-        destination_space = environ.get_name(self.destination_space)
         with open(self.source) as f:
             data = [tuple(x.strip() for x in row.split(',')) for row in f]
-        destination_space.add_name(self.destination_name, Table(data[0], data[1:]))
+        environ.save_as(self.destination, Table(data[0], data[1:]))
 
 @dataclass
 class Select:
     columns: [str]
     source: str
     condition: (str, str)
-    destination_space: str
-    destination_name: str
+    destination: str
 
     def execute(self, environ):
-        destination_space = environ.get_name(self.destination_space)
-
         source_table = environ.get_name(self.source)
         indices = [source_table.columns.index(c) for c in self.columns]
         icond = source_table.columns.index(self.condition[0])
@@ -56,7 +54,7 @@ class Select:
                 for row in source_table
                 if row[icond] == self.condition[1]
                 ]
-        destination_space.add_name(self.destination_name, Table(self.columns, data))
+        environ.save_as(self.destination, Table(self.columns, data))
 
 @dataclass
 class Print:
@@ -75,8 +73,8 @@ class Print:
 
 def main():
     tasks = [
-        Import('countries.csv', 'work', 'countries'),
-        Select(['name', 'capital'], 'work.countries',  ('continent', 'Europe'), 'work', 'european'),
+        Import('countries.csv', 'work.countries'),
+        Select(['name', 'capital'], 'work.countries',  ('continent', 'Europe'), 'work.european'),
         Print('work.european')
     ]
 
