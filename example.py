@@ -19,6 +19,15 @@ class Environment(Namespace):
         destination_space, destination_name = destination.rsplit('.', 1)
         self.get_name(destination_space).add_name(destination_name, item)
 
+    def execute(self, task_name, task_arguments):
+        dispatcher = {
+            'Print': execute_print,
+            'Import': execute_import,
+            'Select': execute_select,
+        }
+        execute_task = dispatcher[task_name]
+        execute_task(self, task_arguments)
+
 
 @dataclass
 class Table:
@@ -33,10 +42,10 @@ class Import:
     source: str
     destination: str
 
-    def execute(self, environ):
-        with open(self.source) as f:
-            data = [tuple(x.strip() for x in row.split(',')) for row in f]
-        environ.save_as(self.destination, Table(data[0], data[1:]))
+def execute_import(environ, args: Import):
+    with open(args.source) as f:
+        data = [tuple(x.strip() for x in row.split(',')) for row in f]
+    environ.save_as(args.destination, Table(data[0], data[1:]))
 
 @dataclass
 class Select:
@@ -45,31 +54,31 @@ class Select:
     condition: (str, str)
     destination: str
 
-    def execute(self, environ):
-        source_table = environ.get_name(self.source)
-        indices = [source_table.columns.index(c) for c in self.columns]
-        icond = source_table.columns.index(self.condition[0])
+def execute_select(environ, args: Select):
+    source_table = environ.get_name(args.source)
+    indices = [source_table.columns.index(c) for c in args.columns]
+    icond = source_table.columns.index(args.condition[0])
 
-        data = [tuple(row[i] for i in indices)
-                for row in source_table
-                if row[icond] == self.condition[1]
-                ]
-        environ.save_as(self.destination, Table(self.columns, data))
+    data = [tuple(row[i] for i in indices)
+            for row in source_table
+            if row[icond] == args.condition[1]
+            ]
+    environ.save_as(args.destination, Table(args.columns, data))
 
 @dataclass
 class Print:
     source: str
 
-    def execute(self, environ):
-        source_table = environ.get_name(self.source)
-        col_len = [max(len(c), max((len(str(row[i])) for row in source_table.data), default=0))
-                   for i, c in enumerate(source_table.columns)]
-        print('='.join('='*x for x in col_len))
-        print(' '.join(c.ljust(l) for c, l in zip(source_table.columns, col_len)))
-        print(' '.join('-'*x for x in col_len))
-        for row in source_table:
-            print(' '.join(str(x).ljust(l) for x, l in zip(row, col_len)))
-        print('='.join('='*x for x in col_len))
+def execute_print(environ, args: Print):
+    source_table = environ.get_name(args.source)
+    col_len = [max(len(c), max((len(str(row[i])) for row in source_table.data), default=0))
+               for i, c in enumerate(source_table.columns)]
+    print('='.join('='*x for x in col_len))
+    print(' '.join(c.ljust(l) for c, l in zip(source_table.columns, col_len)))
+    print(' '.join('-'*x for x in col_len))
+    for row in source_table:
+        print(' '.join(str(x).ljust(l) for x, l in zip(row, col_len)))
+    print('='.join('='*x for x in col_len))
 
 def main():
     tasks = [
@@ -81,7 +90,7 @@ def main():
     environ = Environment()
     environ.add_name('work', Namespace())
     for task in tasks:
-        task.execute(environ)
+        environ.execute(task.__class__.__name__, task)
 
 if __name__ == '__main__':
     main()
