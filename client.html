@@ -26,7 +26,7 @@
           <use transform="translate(70 20)" href="#task"/>
           <use transform="translate(110 50)" href="#task"/>
           <use transform="translate(20 10)" href="#table"/>
-          <g id="table" transform="translate(250 20)" class="icon" onclick="startDrag(evt)" >
+          <g id="table" transform="translate(250 20)" class="icon" onmousedown="startDrag(evt)" onmousemove="moveDrag(evt)" onmouseup="endDrag(evt)">
             <use href="#table"/>
             <text text-anchor="middle" x="15" y="40" style="font-family:helvetica; font-size:10">work.countries</text>
           </g>
