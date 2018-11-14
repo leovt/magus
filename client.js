@@ -11,8 +11,6 @@ function cursorPoint(evt){
 
 function startDrag(evt){
   if (evt.button != 0) {return;}
-  console.log(evt.target);
-  console.log(evt.target.parentElement);
   if (evt.target.parentElement.classList.contains('icon')) {
     selection = evt.target.parentElement;
     var pt = cursorPoint(evt);
