@@ -12,7 +12,7 @@
         <button>New Select Task</button>
       </div>
       <div id="container">
-        <svg id="flow">
+        <svg id="flow" onmousedown="startDrag(evt)" onmousemove="moveDrag(evt)" onmouseup="endDrag(evt)">
           <pattern id="crosshatch_pattern" width="10" height="10" patternUnits="userSpaceOnUse">
             <path d="M10 0 L 0 0 L 0 10" style="stroke:lightgrey; stroke-width:1; fill:none"  />
           </pattern>
@@ -23,10 +23,10 @@
             <rect width="29" height="29" x="0.5" y="0.5" style="stroke:black; stroke-width:1; fill:lightblue"/>
           </symbol>
           <rect width="100%" height="100%" x="0" y="0" fill="url(#crosshatch_pattern)"/>
-          <use transform="translate(70 20)" href="#task"/>
-          <use transform="translate(110 50)" href="#task"/>
-          <use transform="translate(20 10)" href="#table"/>
-          <g id="table" transform="translate(250 20)" class="icon" onmousedown="startDrag(evt)" onmousemove="moveDrag(evt)" onmouseup="endDrag(evt)">
+          <g class="icon" transform="translate(70 20)"><use href="#task"/></g>
+          <g class="icon" transform="translate(110 50)"><use href="#task"/></g>
+          <g class="icon" transform="translate(20 10)"><use href="#table"/></g>
+          <g id="table" transform="translate(250 20)" class="icon">
             <use href="#table"/>
             <text text-anchor="middle" x="15" y="40" style="font-family:helvetica; font-size:10">work.countries</text>
           </g>
