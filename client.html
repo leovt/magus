@@ -4,13 +4,17 @@
     <meta charset="utf-8">
     <title>Magus</title>
     <link rel="stylesheet" href="style.css">
+    <script
+    			  src="https://code.jquery.com/jquery-3.3.1.js"
+    			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    			  crossorigin="anonymous"></script>
     <script src="client.js"></script>
   </head>
   <body>
     <div id="main">
       <div id="toolbar">
         <button onclick='onAddIcon();'>New Import Task</button>
-        <button>New Select Task</button>
+        <button onclick='loadJSON();'>New Select Task</button>
       </div>
       <div id="container">
         <svg id="flow"

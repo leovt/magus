@@ -64,3 +64,34 @@ function addIcon(id, x, y, symbol, label){
 function onAddIcon(){
   addIcon('random', 100, 100, 'table', 'random');
 }
+
+
+function loadJSON(){
+  $('.icon').remove()
+
+  var json = {
+    'source': {
+      'icon': 'table',
+      'label': 'work.source',
+      'x': 40,
+      'y': 20
+    },
+    'select': {
+      'icon': 'task',
+      'label': 'query on source',
+      'x': 120,
+      'y': 20
+    },
+    'result': {
+      'icon': 'table',
+      'label': 'work.result',
+      'x': 200,
+      'y': 20
+    }
+  };
+
+  Object.entries(json).forEach(function([key, value]){
+    addIcon(key, value.x, value.y, value.icon, value.label);
+  })
+
+}
