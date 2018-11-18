@@ -1,3 +1,31 @@
+var flow_json = {
+    'source': {
+      'icon': 'table',
+      'label': 'work.source',
+      'x': 40,
+      'y': 20,
+      'succ': ['select'],
+      'pred': []
+    },
+    'select': {
+      'icon': 'task',
+      'label': 'query on source',
+      'x': 120,
+      'y': 20,
+      'succ': ['result'],
+      'pred': ['source']
+    },
+    'result': {
+      'icon': 'table',
+      'label': 'work.result',
+      'x': 200,
+      'y': 20,
+      'succ': [],
+      'pred': ['result']
+    }
+  };
+
+
 function setup_dragdrop(){
   var selection;
   var mousepos_off_x;
@@ -25,7 +53,8 @@ function setup_dragdrop(){
   function moveDrag(evt){
     if (selection) {
       var pt = cursorPoint(evt);
-      selection.transform.baseVal.getItem(0).setTranslate(pt.x-mousepos_off_x, pt.y-mousepos_off_y);
+      moveIcon(selection.id, pt.x-mousepos_off_x, pt.y-mousepos_off_y);
+
     }
   }
 
@@ -40,6 +69,10 @@ function setup_dragdrop(){
 
 document.addEventListener("DOMContentLoaded", setup_dragdrop);
 
+function moveIcon(id, x, y){
+  var icon = document.querySelector('#'+id);
+  icon.transform.baseVal.getItem(0).setTranslate(x,y);
+}
 
 function addIcon(id, x, y, symbol, label){
   var svg = document.querySelector('svg');
@@ -61,6 +94,23 @@ function addIcon(id, x, y, symbol, label){
   group.appendChild(text);
 }
 
+function addArrow(id, x1, y1, x2, y2){
+  var svg = document.querySelector('svg');
+  var path = document.createElementNS("http://www.w3.org/2000/svg", 'path')
+  path.id = id;
+  path.setAttribute('class', 'arrow');
+  path.setAttribute('marker-start', "url(#arrowtail)");
+  path.setAttribute('marker-end', "url(#arrowhead)");
+  svg.appendChild(path);
+  moveArrow(id, x1, y1, x2, y2);
+}
+
+function moveArrow(id, x1, y1, x2, y2){
+  var path = document.querySelector('#'+id)
+  path.setAttribute('d', `M${x1+40} ${y1+15} L${x1+50} ${y1+15} L${x2-20} ${y2+15} L${x2-10} ${y2+15}`);
+}
+
+
 function onAddIcon(){
   addIcon('random', 100, 100, 'table', 'random');
 }
@@ -69,29 +119,13 @@ function onAddIcon(){
 function loadJSON(){
   $('.icon').remove()
 
-  var json = {
-    'source': {
-      'icon': 'table',
-      'label': 'work.source',
-      'x': 40,
-      'y': 20
-    },
-    'select': {
-      'icon': 'task',
-      'label': 'query on source',
-      'x': 120,
-      'y': 20
-    },
-    'result': {
-      'icon': 'table',
-      'label': 'work.result',
-      'x': 200,
-      'y': 20
-    }
-  };
-
-  Object.entries(json).forEach(function([key, value]){
+  Object.entries(flow_json).forEach(function([key, value]){
     addIcon(key, value.x, value.y, value.icon, value.label);
   })
 
+  Object.entries(flow_json).forEach(function([key, value]){
+    value.succ.forEach(function(succ){
+      addArrow(key+'-'+succ, value.x, value.y, flow_json[succ].x, flow_json[succ].y);
+    })
+  })
 }
