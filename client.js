@@ -39,3 +39,28 @@ function setup_dragdrop(){
 };
 
 document.addEventListener("DOMContentLoaded", setup_dragdrop);
+
+
+function addIcon(id, x, y, symbol, label){
+  var svg = document.querySelector('svg');
+  var group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
+  svg.appendChild(group);
+  group.id = id;
+  group.setAttribute('transform', 'translate(0,0)');
+  group.setAttribute('class', 'icon');
+  group.transform.baseVal.getItem(0).setTranslate(x,y);
+  var use = document.createElementNS("http://www.w3.org/2000/svg", 'use');
+  use.setAttribute('href', "#"+symbol);
+  text = document.createElementNS("http://www.w3.org/2000/svg", 'text');
+  text.setAttribute('class', 'icon');
+  text.setAttribute('text-anchor', "middle");
+  text.setAttribute('x', '15');
+  text.setAttribute('y', '42');
+  text.textContent = label;
+  group.appendChild(use);
+  group.appendChild(text);
+}
+
+function onAddIcon(){
+  addIcon('random', 100, 100, 'table', 'random');
+}

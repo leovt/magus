@@ -22,3 +22,7 @@ svg#flovw{
   height: 100px;
   width: 1100px;
 }
+
+text.icon{
+  font: 12px sans-serif;
+}
