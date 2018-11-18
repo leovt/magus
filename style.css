@@ -26,3 +26,9 @@ svg#flovw{
 text.icon{
   font: 12px sans-serif;
 }
+
+.arrow{
+  stroke: darkgrey;
+  stroke-width:2;
+  fill:none
+}

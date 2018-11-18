@@ -19,16 +19,26 @@
       <div id="container">
         <svg id="flow"
              viewBox="0 0 1000 600" width="1000" height="600">
-          <pattern id="crosshatch_pattern" width="10" height="10" patternUnits="userSpaceOnUse">
-            <path d="M10 0 L 0 0 L 0 10" style="stroke:lightgrey; stroke-width:1; fill:none"  />
-          </pattern>
-          <symbol id="task" width="30" height="30" viewBox="0 0 30 30">
-            <rect width="29" height="29" x="0.5" y="0.5" style="stroke:black; stroke-width:1; fill:pink"/>
-          </symbol>
-          <symbol id="table" width="30" height="30" viewBox="0 0 30 30">
-            <rect width="29" height="29" x="0.5" y="0.5" style="stroke:black; stroke-width:1; fill:lightblue"/>
-          </symbol>
+          <defs>
+            <pattern id="crosshatch_pattern" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M10 0 L 0 0 L 0 10" style="stroke:lightgrey; stroke-width:1; fill:none"  />
+            </pattern>
+            <symbol id="task" width="30" height="30" viewBox="0 0 30 30">
+              <rect width="29" height="29" x="0.5" y="0.5" style="stroke:black; stroke-width:1; fill:pink"/>
+            </symbol>
+            <symbol id="table" width="30" height="30" viewBox="0 0 30 30">
+              <rect width="29" height="29" x="0.5" y="0.5" style="stroke:black; stroke-width:1; fill:lightblue"/>
+            </symbol>
+            <marker id="arrowhead" markerHeight="6" markerWidth="10" refX="5" refY="3" orient="auto">
+              <path d="M9 3 L1 1 L4 3 L1 5 Z" style="fill:darkgrey">
+            </marker>
+            <marker id="arrowtail" markerHeight="6" markerWidth="10" refX="5" refY="3" orient="auto">
+              <path d="M9 3 L7 2 L1 2 L3 3 L1 4 L7 4 Z" style="fill:darkgrey">
+            </marker>
+          </defs>
           <rect width="100%" height="100%" x="0" y="0" fill="url(#crosshatch_pattern)"/>
+          <path d="M80 35 L90 35 L 100 95 L110 95" class="arrow"
+          marker-start="url(#arrowtail)" marker-end="url(#arrowhead)"/>
         </svg>
       </div>
     </div>
