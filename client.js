@@ -21,7 +21,7 @@ var flow_json = {
       'x': 200,
       'y': 20,
       'succ': [],
-      'pred': ['result']
+      'pred': ['select']
     }
   };
 
@@ -71,7 +71,15 @@ document.addEventListener("DOMContentLoaded", setup_dragdrop);
 
 function moveIcon(id, x, y){
   var icon = document.querySelector('#'+id);
+  flow_json[id].x = x;
+  flow_json[id].y = y;
   icon.transform.baseVal.getItem(0).setTranslate(x,y);
+  flow_json[id].succ.forEach(function(succ){
+    moveArrow(id+'-'+succ, flow_json[id].x, flow_json[id].y, flow_json[succ].x, flow_json[succ].y);
+  });
+  flow_json[id].pred.forEach(function(pred){
+    moveArrow(pred+'-'+id, flow_json[pred].x, flow_json[pred].y, flow_json[id].x, flow_json[id].y);
+  });
 }
 
 function addIcon(id, x, y, symbol, label){
