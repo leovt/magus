@@ -1,4 +1,4 @@
-var flow_json = {
+var flow_json_template = {
     'source': {
       'icon': 'table',
       'label': 'work.source',
@@ -24,6 +24,8 @@ var flow_json = {
       'pred': ['select']
     }
   };
+
+var flow_json = {};
 
 
 function setup_dragdrop(){
@@ -83,6 +85,14 @@ function moveIcon(id, x, y){
 }
 
 function addIcon(id, x, y, symbol, label){
+  flow_json[id] = {
+    'x': x,
+    'y': y,
+    'icon': symbol,
+    'label': label,
+    'succ': [],
+    'pred': []
+  }
   var svg = document.querySelector('svg');
   var group = document.createElementNS("http://www.w3.org/2000/svg", 'g');
   svg.appendChild(group);
@@ -102,15 +112,17 @@ function addIcon(id, x, y, symbol, label){
   group.appendChild(text);
 }
 
-function addArrow(id, x1, y1, x2, y2){
+function addArrow(src_id, dst_id){
+  flow_json[src_id].succ.push(dst_id);
+  flow_json[dst_id].pred.push(src_id);
   var svg = document.querySelector('svg');
   var path = document.createElementNS("http://www.w3.org/2000/svg", 'path')
-  path.id = id;
+  path.id = src_id+'-'+dst_id;
   path.setAttribute('class', 'arrow');
   path.setAttribute('marker-start', "url(#arrowtail)");
   path.setAttribute('marker-end', "url(#arrowhead)");
   svg.appendChild(path);
-  moveArrow(id, x1, y1, x2, y2);
+  moveArrow(path.id, flow_json[src_id].x, flow_json[src_id].y, flow_json[dst_id].x, flow_json[dst_id].y);
 }
 
 function moveArrow(id, x1, y1, x2, y2){
@@ -125,15 +137,17 @@ function onAddIcon(){
 
 
 function loadJSON(){
-  $('.icon').remove()
+  $('.icon').remove();
+  $('.arrow').remove();
+  flow_json = {};
 
-  Object.entries(flow_json).forEach(function([key, value]){
+  Object.entries(flow_json_template).forEach(function([key, value]){
     addIcon(key, value.x, value.y, value.icon, value.label);
   })
 
-  Object.entries(flow_json).forEach(function([key, value]){
+  Object.entries(flow_json_template).forEach(function([key, value]){
     value.succ.forEach(function(succ){
-      addArrow(key+'-'+succ, value.x, value.y, flow_json[succ].x, flow_json[succ].y);
+      addArrow(key, succ);
     })
   })
 }
