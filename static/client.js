@@ -75,6 +75,10 @@ function moveIcon(id, x, y){
   var icon = document.querySelector('#'+id);
   flow_json[id].x = x;
   flow_json[id].y = y;
+  oReq = new XMLHttpRequest();
+  oReq.open('PUT', "/flowitems/"+id);
+  oReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  oReq.send(JSON.stringify({'x': x, 'y': y}));
   icon.transform.baseVal.getItem(0).setTranslate(x,y);
   flow_json[id].succ.forEach(function(succ){
     moveArrow(id+'-'+succ, flow_json[id].x, flow_json[id].y, flow_json[succ].x, flow_json[succ].y);
