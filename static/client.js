@@ -136,16 +136,24 @@ function onAddIcon(){
 }
 
 
-function loadJSON(){
+function openProject(){
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener("load", function(){
+    loadJSON(JSON.parse(this.response))});
+  oReq.open("GET", "/flowitems");
+  oReq.send();
+}
+
+function loadJSON(json){
   $('.icon').remove();
   $('.arrow').remove();
   flow_json = {};
 
-  Object.entries(flow_json_template).forEach(function([key, value]){
+  Object.entries(json).forEach(function([key, value]){
     addIcon(key, value.x, value.y, value.icon, value.label);
   })
 
-  Object.entries(flow_json_template).forEach(function([key, value]){
+  Object.entries(json).forEach(function([key, value]){
     value.succ.forEach(function(succ){
       addArrow(key, succ);
     })

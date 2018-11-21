@@ -52,4 +52,9 @@ class FlowItem(Resource):
         flow_items[item_id].update(request.json)
         return '', 204 # no content
 
+class FlowItemList(Resource):
+    def get(self):
+        return flow_items
+
 api.add_resource(FlowItem, '/flowitems/<string:item_id>')
+api.add_resource(FlowItemList, '/flowitems')
