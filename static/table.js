@@ -9,10 +9,10 @@ $(document).ready( function () {
       tr.appendChild(th);
     })
     $('#table_id').DataTable({
-      'ajax': '../tables/test.cantons',
+      'ajax': '../tables/test.cantons/json',
       'paging': false
     });
   });
-  oReq.open("GET", '../tables/test.cantons');
+  oReq.open("GET", '../tables/test.cantons/json');
   oReq.send();
 } );
