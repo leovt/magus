@@ -69,7 +69,20 @@ function setup_dragdrop(){
   svg.addEventListener('mouseup', endDrag);
 };
 
+function setup_dblclick(){
+  function openItem(evt){
+    if (evt.button != 0) {return;}
+    if (evt.target.parentElement.classList.contains('icon')) {
+      window.open('/tables/test.cantons');
+    }
+  }
+  var svg = document.querySelector('svg');
+  svg.addEventListener('dblclick', openItem);
+}
+
 document.addEventListener("DOMContentLoaded", setup_dragdrop);
+document.addEventListener("DOMContentLoaded", setup_dblclick);
+
 
 function moveIcon(id, x, y){
   var icon = document.querySelector('#'+id);
