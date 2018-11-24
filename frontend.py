@@ -1,6 +1,8 @@
 from flask import Flask, request, abort
 from flask_restful import Resource, Api
 
+from sample_data import TEST_CANTONS
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -58,3 +60,11 @@ class FlowItemList(Resource):
 
 api.add_resource(FlowItem, '/flowitems/<string:item_id>')
 api.add_resource(FlowItemList, '/flowitems')
+
+class Table(Resource):
+    def get(self, fq_name):
+        if fq_name != 'test.cantons':
+            abort(404)
+        return TEST_CANTONS
+
+api.add_resource(Table, '/tables/<string:fq_name>')
