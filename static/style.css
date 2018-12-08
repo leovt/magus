@@ -46,3 +46,29 @@ text.icon{
   stroke-width:2;
   fill:none
 }
+
+li.store_table{
+   list-style: none;
+}
+li.store_table:before{
+   content: '';
+   display: inline-block;
+   height: 1em;
+   width: 1em;
+   margin-right: 0.2em;
+   background-image: url('li_table.png');
+   background-size: 1em;
+}
+
+li.store_ns{
+   list-style: none;
+}
+li.store_ns:before{
+   content: '';
+   display: inline-block;
+   height: 1em;
+   width: 1em;
+   margin-right: 0.2em;
+   background-image: url('li_store.png');
+   background-size: 1em;
+}
