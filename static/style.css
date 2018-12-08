@@ -5,8 +5,8 @@ html, body {
 }
 
 div#container {
-        height: 1px;
-        width: 100%;
+        height: 100%;
+        width: 1px;
         overflow: scroll;
         flex-grow: 1;
         flex-shrink: 1;
@@ -16,6 +16,20 @@ div#main {
   display: flex;
   flex-direction: column;
   height:100%
+}
+
+div#hsplit {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 1px;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+div#sidebar {
+  overflow: scroll;
+  height:100%;
 }
 
 svg#flovw{
